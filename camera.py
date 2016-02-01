@@ -15,7 +15,7 @@ image = pygame.Surface(dimensions, depth=32)
 while True:
   cam.get_image(image)
 
-  pixels = pixels3d(image)
+  #pixels = pixels3d(image)
   """
   i = 0
   for x in range(dimensions[0]):
@@ -26,8 +26,8 @@ while True:
         pixels[x][y][1] = 0
         pixels[x][y][2] = 255
   """
-  print pixels
-  del pixels
+  #print pixels
+  #del pixels
 
   window.blit(image, (0, 0))
   pygame.display.update()
