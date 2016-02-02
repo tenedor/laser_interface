@@ -1,11 +1,11 @@
-#import serial
+import serial
 import time
 import random
 import sys
 import cv2
 import numpy as np
 import Tkinter as Tk
-import Image, ImageTk
+from PIL import Image, ImageTk
 
 
 events = {
@@ -58,7 +58,10 @@ class Laser_Toggle_App:
 
         canvas.pack()
 
-        #self.read_serial_every_n_milliseconds(100)
+        self.image_label = Tk.Label(master)
+        self.image_label.pack()
+
+        self.read_serial_every_n_milliseconds(100)
         self.read_position_every_n_milliseconds(30)
 
     def on_keypress_global(self, e):
@@ -117,13 +120,19 @@ class Laser_Toggle_App:
         thresh = cv2.drawKeypoints(thresh, keypoints, np.array([]), (0,0,255),
                 cv2.DRAW_MATCHES_FLAGS_DRAW_RICH_KEYPOINTS)
 
-        cv2.imshow("video", thresh)
-        cv2.imshow("v", v)
+        display_image = cv2.cvtColor(thresh, cv2.COLOR_BGR2RGB)
+        display_image = Image.fromarray(display_image)
+        display_image = ImageTk.PhotoImage(image=display_image)
+
+        self.image_label.configure(image=display_image)
+        self.image_label.image = display_image
+
+        #cv2.imshow("video", thresh)
+        #cv2.imshow("v", v)
 
         self.master_frame.after(ms, self.read_position_every_n_milliseconds, ms)
 
 
-"""
 #  check command line arguments
 if (len(sys.argv) != 2):
     print "command line: ftdi-mosfets.44.py serial_port"
@@ -134,10 +143,6 @@ port = sys.argv[1]
 ser = serial.Serial(port, 9600)
 ser.setDTR()
 ser.flush()
-"""
-
-# for now, no serial
-ser = None
 
 root = Tk.Tk()
 root.title('ftdi-mosfets.44.py (q to exit)')
