@@ -2,7 +2,6 @@ import cv2
 import sys
 import time
 import numpy as np
-from matplotlib import pyplot as plt
 
 #cascPath = sys.argv[1]
 #faceCascade = cv2.CascadeClassifier(cascPath)
